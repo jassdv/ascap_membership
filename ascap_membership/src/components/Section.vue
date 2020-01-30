@@ -2,7 +2,7 @@
 <div>
     <header>
         <div class="ennumeration">
-            <span class="section-number">{{sectionNumber}}</span>
+            <span class="section-number">{{number}}</span>
             <svg 
                 xmlns="http://www.w3.org/2000/svg"
                 width="17"
@@ -14,17 +14,17 @@
                 stroke-linejoin="round" 
                 class="feather feather-checkx"
             >
-            <polyline points="20 6 9 17 4 12">
+            <polyline points="20 6 9 17 4 12" />
             </svg>
         </div>
         <h2>{{headerTitle}}</h2>
     </header>
     <div>
         <slot />
-        <div>
+        <!-- <div>
             <SectionButton v-if="cancelAction" label="cancel" :click="cancelAction"> </SectionButton>
             <SectionButton v-if="continueAction" label="continue" :click="continueAction"> </SectionButton>
-        </div>
+        </div> -->
     </div>
 </div>
 
@@ -43,7 +43,7 @@ export default {
       required: true
     },
     sectionNumber: {
-        type: Number,
+        type: String,
         required: true
     },
     continueAction:{
@@ -57,6 +57,11 @@ export default {
         default: null
     }
   },
+  computed: {
+      number(){
+          return parseInt(this.sectionNumber)
+      }
+  }
     
 }
 </script>

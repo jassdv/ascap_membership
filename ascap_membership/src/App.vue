@@ -1,7 +1,14 @@
 <template>
   <div id="app">
-    <div>hello</div>
-    <SectionButton label="cancel" :click="doSomething"></SectionButton>
+    <Section
+      headerTitle="Membership"
+      sectionNumber=1
+      continueAction="continueAction"
+      cancelAction="cancelAction">
+      <SectionMembership />
+      
+    </Section>
+    
     <!-- <img src="./assets/logo.png">
     <h1>{{ msg }}</h1>
     <h2>Essential Links</h2>
@@ -23,10 +30,15 @@
 
 <script>
 import SectionButton from './components/SectionButton.vue';
+import SectionMembership from './components/SectionMembership.vue'
+import Section from './components/Section.vue'
 
 export default {
   components: {
-    SectionButton
+    SectionButton,
+    SectionMembership,
+    Section
+
   },
   name: 'app',
   data () {

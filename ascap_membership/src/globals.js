@@ -1,7 +1,7 @@
 /*globals that could also be fetched from server*/
 
 //cards titles
-export const WRITER_PUBLISHER_TITLE = 'Writer & Piblisher'
+export const WRITER_PUBLISHER_TITLE = 'Writer & Publisher'
 export const WRITER_TITLE = 'Writer'
 export const PUBLISHER_TITLE = 'Publisher'
 

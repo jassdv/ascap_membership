@@ -1,7 +1,7 @@
 <template>
     <div class="card">
-        <input type="type" name="name" id="selectedBoth">
-        <label for="selectedBoth" class="c-card c-card--interactive is-unselected">
+        <!-- <input type="type" name="name" v-on:click.stop="printClick"> -->
+        <button class="c-card c-card--interactive is-unselected" v-on:click.stop="printClick">
             <div id="membershipCardContent">
             <div class="card__header">
                 <div class="c-marked-text c-marked-text--center">
@@ -22,7 +22,7 @@
                     {{membership.description}}</p>
                 <p>
                 <span class="h-color-b500 h-text-transform-uppercase t-weight_bold c-card__state-color-control">
-                    $ {{membership.pric}} Application Fee
+                    ${{membership.price}} Application Fee
                 </span>
                 <br>
                 <span v-if="!membership.refundable" class="t-body_sm h-color-m600 c-card__state-color-control">
@@ -42,12 +42,13 @@
                 </ul>
             </div>
         </div>
-    </label>
+        </button>
 </div>
     
 </template>
 <script>
 import { WRITER_PUBLISHER_TITLE, WRITER_TITLE, PUBLISHER_TITLE, WRITE_PUBLISHER_SVG, WRITER_SVG, PUBLISHER_SVG } from '../globals.js'
+import { mapActions } from 'vuex'
 
 export default {
     props: {
@@ -57,12 +58,12 @@ export default {
         },
         type: {
             type: String,
-            required: true
+            required: false
         },
         title: {
             type: String,
             required: true
-        }
+        },
     },
     data() {
         return {
@@ -90,8 +91,24 @@ export default {
             }
         }
     },
-    mounted: () =>{
+    methods: {
+        ...mapActions([
+            'chosenMembership'
+        ]),
+        chosenMembership(){
+            console.log("in chosen membership action-title", this.title)
+            this.$store.dispatch('chosenMembership',this.title)
+        },
+        printClick(event){
+            console.log("got click inside card", event.target)
+            this.chosenMembership()
+            //this.$emit('click', this.title)
+        }
+
+    },
+    mounted: function(){
         //initializing memrbership list - next step, need to be taken from the VueX store
+        
         switch(this.title){
             case WRITER_PUBLISHER_TITLE:
                 this.membership.title = WRITER_PUBLISHER_TITLE
@@ -118,11 +135,6 @@ export default {
                 break
         }
     }
-
-
-
-
-    
 }
 </script>
 <style scoped>
@@ -133,7 +145,7 @@ export default {
         padding-right: 15px;
         padding-left: 15px;
     }
-    #selectedBoth{
+    .selectedBoth{
         box-sizing: border-box;
         padding: 0;
         margin: 0;

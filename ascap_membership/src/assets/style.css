@@ -4,6 +4,17 @@ font-family: "Circular Black",sans-serif;
 div{
     text-align: left;
 }
+a, .link {
+    color: #175da7;
+    transition: all .2s ease;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-bottom .5s ease-in;
+}
+p, ul{
+    padding: 0;
+    margin: 0 0 .71em;
+}
 .container {
     width: 100%;
     padding-right: 15px;

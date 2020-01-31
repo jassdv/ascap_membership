@@ -1,23 +1,19 @@
 <template>
-    <div class="card">
-        <!-- <input type="type" name="name" v-on:click.stop="printClick"> -->
-        <button class="c-card c-card--interactive is-unselected no-padding" v-on:click.stop="printClick">
+    <div class="card-frame">
+        <button class="c-card no-padding" v-bind:class="[(chosenMembership === title) ? 'c-card-interactive' : '']" v-on:click.stop="clickUpdate">
             <div id="membershipCardContent">
-            <div class="card__header">
+            <div class="card-header" v-bind:class="[(chosenMembership === title) ? 'card-header-colors-interactive' : 'card-header-colors']">
                 <div class="c-marked-text c-marked-text--center">
-                    <div class="c-marked-text__icon">
-                        <svg id="quavers-and-briefcases" xmlns="http://www.w3.org/2000/svg" stroke-width="2" width="40px" height="29px" viewBox="-24.652 -22.871 40 27" class="c-icon c-icon--size-auto">
-                            {{cardheaderSvg}}
-                        </svg>
+                    <div class="c-marked-text__icon" v-html="cardheaderSvg">
                     </div>
                     <div class="c-marked-text__content">
                         <h2 
-                            class="t-font-heading_lg t-weight_medium">{{title}}
+                            class="header-text">{{title}}
                         </h2>
                     </div>
                 </div>
             </div>
-            <div class="c-card__body">
+            <div class="card-body">
                 <p>
                     {{membership.description}}</p>
                 <p>
@@ -34,9 +30,7 @@
                 </h5>
                 <ul class="ome-list--checkmarks u-spacing-outside-bottom-lg">
                     <li v-for="requirement in membership.requirements" v-bind:key="requirement.title" class="u-spacing-outside-bottom">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" class="c-icon">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" class="card-icon"><polyline points="20 6 9 17 4 12"></polyline></svg>
                         {{requirement}}
                     </li>
                 </ul>
@@ -49,6 +43,7 @@
 <script>
 import { WRITER_PUBLISHER_TITLE, WRITER_TITLE, PUBLISHER_TITLE, WRITE_PUBLISHER_SVG, WRITER_SVG, PUBLISHER_SVG } from '../globals.js'
 import { mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
     props: {
@@ -89,14 +84,15 @@ export default {
                 default:
                     return WRITE_PUBLISHER_SVG
             }
-        }
+        },
+        ...mapGetters(['chosenMembership'])
     },
     methods: {
         ...mapActions([
             'chosenMembership',
             'chosenPublisherCompanyType'
         ]),
-        chosenMembership(){
+        updateChosenMembership(){
             console.log("in chosen membership action-title", this.title)
             this.$store.dispatch('chosenMembership',this.title)
             if(this.title === WRITER_TITLE)  this.chosenPublisherCompanyType('')
@@ -104,10 +100,8 @@ export default {
         chosenPublisherCompanyType(publisherCompanyType){
             this.$store.dispatch('chosenPublisherCompanyType',publisherCompanyType)
         },
-        printClick(event){
-            console.log("got click inside card", event.target)
-            this.chosenMembership()
-            //this.$emit('click', this.title)
+        clickUpdate(event){
+            this.updateChosenMembership()
         }
 
     },
@@ -144,7 +138,7 @@ export default {
 }
 </script>
 <style scoped>
-    .card{
+    .card-frame{
         position: relative;
         width: 100%;
         min-height: 1px;
@@ -172,17 +166,27 @@ export default {
         border-radius: 2px;
         margin-bottom: 0;
     }
-    .c-card--interactive {
+    .c-card:hover{
+        border-color: #4dbdff;
+    }
+    .c-card-interactive {
         background: #fff;
         cursor: pointer;
         transition: all .5s;
+        border-color:  #1178ce;
     }
-    #membershipCardContent{
+    /* #membershipCardContent{
         margin-top: 10px;
+    } */
+    
+    .card-header:hover{
+        border-color: #4dbdff;
     }
-    .card_header{
-        color: #fff;
-        background: #1178ce;
+
+    .header-text{
+        margin-top: 0px;
+        margin-bottom: 0px;
+        font-size: 16px;
     }
     .c-marked-text--center {
         justify-content: center;
@@ -203,26 +207,53 @@ export default {
         flex: 1 1 auto;
         align-self: center;
     }
-    .c-icon {
+    .card-icon {
         vertical-align: sub;
         fill: none;
         stroke: currentColor;
         stroke-linecap: round;
         stroke-linejoin: round;
     }
-    .c-card__header, .c-card__body {
+    .card-header, .card-body {
         padding: 24px 24px;
+    }
+    .card-body{
+        font-size: 12px;
+        line-height: 1.5;
+        font-weight: medium;
     }
     .h-text-transform-uppercase {
         text-transform: uppercase;
     }
-    .c-card__header{
+    .card-header{
         border-bottom: 1px solid #85868c;
+        font-size: 1.25em;
+        line-height: 1.3;
     }
-    .c-card--interactive:not(:hover).is-unselected .c-card__header {
+    .card-header-colors{
         color: #85868c;
         background: #fafafa;
     }
+    .card-header-colors-interactive{
+        color: #fff;
+        background: #1178ce;
+        border-color: #1178ce
+    }
+    /* .card-header-interactive{
+        color: #fff;
+        background: #1178ce;
+        border-color: #1178ce;
+    } */
+    .card-header:hover{
+        color: #004183;
+    }
+    /* .c-card__header:focus{
+        border-bottom: 1px solid #85868c;
+    } */
+    /* .c-card--interactive:not(:hover).is-unselected .c-card__header {
+        color: #85868c;
+        background: #fafafa;
+    } */
     .h-color-b500 {
         color: #175da7;
     }
@@ -264,12 +295,5 @@ export default {
     svg:not(:root) {
         overflow: hidden;
     }
-    .c-icon {
-        vertical-align: sub;
-        fill: none;
-        stroke: currentColor;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-    }
-
 </style>
+

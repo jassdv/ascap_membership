@@ -80,22 +80,10 @@ ul {
   list-style-type: none;
   padding: 0;
 }
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
 .ome-container {
     position: relative;
     margin-top: 35px;
     margin-bottom: 50px;
-}
-*{
-  font-family: "Circular Black",sans-serif;
 }
 
 </style>

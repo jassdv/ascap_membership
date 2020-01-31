@@ -7,15 +7,22 @@
                 <Card name="membership1" type="radio" v-bind:title="WRITER_TITLE" />
                 <Card name="membership2" type="radio" v-bind:title="PUBLISHER_TITLE" />
             </div>
-            <div v-if="membershipChoiceMissing" class="red-text">{{membershipChoiceerrorMessage}}</div>
-            <p class="t-body_sm">
+            <p v-if="membershipChoiceMissing" class="red-text information-text">{{membershipChoiceerrorMessage}}</p>
+            <p class="information-text">
                 *If you are under 18 years of age please 
                 <a href="https://ome.ascap.com/helpcenter#underAge" target="_blank">read more about how to join ASCAP. </a>
             </p>
-            <div v-if="((chosenMembership === WRITER_PUBLISHER_TITLE) || (chosenMembership === PUBLISHER_TITLE ))">
-                <p>Please select the federal tax classification of your publisher company.</p>
+            <p class="information-text">
+                ASCAP uses TINCheck and SmartyStreets to verify certain information provided by you in connection with your application. Any information
+                processed by TINCheck and SmartyStreets shall be subject to the privacy policies of
+                <a href="https://www.tincheck.com/pages/tincheck-agreement" target="_blank">TINCheck</a> and
+                <a href="https://smartystreets.com/legal/privacy-policy" target="_blank">SmartyStreets</a>.
+            </p>
+            <div v-if="((chosenMembership === WRITER_PUBLISHER_TITLE) || (chosenMembership === PUBLISHER_TITLE ))" class="dropdown">
+                <h3 class="publisher-type-title">Publisher Company Type</h3>
+                <p class="information-text"> Please select the federal tax classification of your publisher company.</p>
                 <DropDown v-bind:contentList="publisherCompanyType"/>
-                <div v-if="piblisherCompanyTypeChoiceMissing" class="red-text">{{publisherCompanyTypeErrorMessage}}</div>
+                <p v-if="piblisherCompanyTypeChoiceMissing" class="red-text information-text">{{publisherCompanyTypeErrorMessage}}</p>
             </div>
             <div>
             <SectionButton label="cancel" :click="cancelAction"> </SectionButton>
@@ -118,9 +125,6 @@ export default {
 .u-spacing-outside-bottom {
     margin-bottom: 16px !important;
 }
-.t-body_sm {
-    font-size: 14px;
-}
 .pb-4, .py-4 {
     padding-bottom: 1.5rem !important;
 }
@@ -131,7 +135,16 @@ export default {
 .red-text{
     color: red;
 }
-.t-body_sm {
-    font-size: 14px;
+.information-text{
+    font-size: 12px;
+    font-weight: 500;
+}
+.publisher-type-title{
+    font-size: 16px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+.dropdown{
+    max-width: 80%;
 }
 </style>

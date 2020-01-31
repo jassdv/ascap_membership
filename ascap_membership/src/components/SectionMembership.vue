@@ -39,7 +39,6 @@ import Card from './Card.vue'
 import DropDown from './DropDown.vue'
 import SectionButton from './SectionButton.vue'
 import { mapGetters, mapActions } from 'vuex'
-
 import { WRITER_PUBLISHER_TITLE, WRITER_TITLE, PUBLISHER_TITLE } from '../globals'
 
 export default {
@@ -68,13 +67,13 @@ export default {
             'membershipError',
             'publisherError'
         ]),
-        updateMembershipError(status){
+        updateMembershipError(status){  //trigger the membershipError action
             this.$store.dispatch('membershipError',status)
         },
-        updatePublisherError(status){
+        updatePublisherError(status){   //trigger the publisherError action
             this.$store.dispatch('publisherError',status)
         },
-        continueAction(){
+        continueAction(){   //handler for "coninue" button. if there is missing data, needs to show error and notify store
             switch(this.chosenMembership){
                 case WRITER_PUBLISHER_TITLE:
                     this.membershipChoiceMissing = false
@@ -111,7 +110,7 @@ export default {
             }
 
         },
-        cancelAction(){
+        cancelAction(){     //cancel button navigates to ASCAP home page
             window.location.href = "https://www.ascap.com/"
         },
     },

@@ -6,14 +6,14 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-      publisherCompanyType: [],
-      chosenPublisherCompanyType: "",
-      chosenMembership: "",
-      membershipError: false,
-      publisherError: false
+      publisherCompanyType: [],         //a list of publishe company types. in real app should be saved in db
+      chosenPublisherCompanyType: "",   //the chosen publisher company type
+      chosenMembership: "",             //the chosen membership type
+      membershipError: false,           //indicates error- when user hit "continue" without choosing membership
+      publisherError: false             //indicates error- when user hit "continue" without choosing publisher company type
 
   },
-  mutations: {
+  mutations: {  //a mutation for each store attribute
     publisherCompanyType(state,payload) {
           state.publisherCompanyType = payload
     },
@@ -32,7 +32,7 @@ const store = new Vuex.Store({
     
 
   },
-  actions:{
+  actions:{ //an action for each store attribute
     publisherCompanyType({commit},payload){
       commit('publisherCompanyType',payload)
     },
@@ -49,7 +49,7 @@ const store = new Vuex.Store({
       commit('publisherError',payload)
     }
   },
-  getters: {
+  getters: {  //a getter for each store attribute
       publisherCompanyType(state) {
           return state.publisherCompanyType;
       },

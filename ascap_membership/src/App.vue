@@ -26,7 +26,7 @@ export default {
   name: 'app',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to ASCAP'
     }
   },
   methods: {
@@ -37,7 +37,7 @@ export default {
             this.$store.dispatch('publisherCompanyType',PUBLISHER_COMPANY_TYPE)
         },
     },
-    created: function(){
+    created: function(){  //when created, mutate the store to hold the list of publisher company type
       this.publisherCompanyType()
     }
 }

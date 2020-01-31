@@ -22,8 +22,6 @@
         <slot />
     </div>
 </div>
-
-    
 </template>
 <script>
 import SectionButton from './SectionButton.vue';

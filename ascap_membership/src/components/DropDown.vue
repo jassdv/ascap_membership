@@ -29,8 +29,8 @@ export default {
     },
     data() {
         return {
-            showList: false,
-            label: "Publisher Company Type"
+            showList: false,                    //indicates whether to toggle down or up the dropdown list
+            label: "Publisher Company Type"     //that is the default title - should be a prop (future improvement)  
 
         }
     },
@@ -39,16 +39,16 @@ export default {
             'chosenPublisherCompanyType',
             'publisherError'
         ]),
-        updateChosenPublisherCompanyType(publisherCompanyType){
+        updateChosenPublisherCompanyType(publisherCompanyType){ //triggers chosenPublisherCompanyType store action
             this.$store.dispatch('chosenPublisherCompanyType',publisherCompanyType)
         },
-        clearPublisher(){
+        clearPublisher(){   //if the user chose an item from the lest, clears the error status in the store
             this.$store.dispatch('publisherError',false)
         },
-        toggleList(){
+        toggleList(){   //update the toggle state attribute
             this.showList = !this.showList
         },
-        updatePublisherType(event){
+        updatePublisherType(event){ //event handlare when the user chooses a publisher company type
             this.toggleList()
             this.label = event.target.textContent
             this.updateChosenPublisherCompanyType(event.target.textContent)

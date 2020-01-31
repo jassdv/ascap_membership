@@ -57,8 +57,8 @@ export default {
     },
     data() {
         return {
-            membership: {
-                "title": "",
+            membership: {           //an object to hold all membership info to display on the card
+                "title": "",      
                 "description": "",
                 "price": 0,
                 "refundable": false,
@@ -67,7 +67,7 @@ export default {
         };
     },
     computed: {
-        cardheaderSvg(){
+        cardheaderSvg(){  //holds the relevant svg
             switch(this.title){
                 case WRITER_PUBLISHER_TITLE:
                     return WRITE_PUBLISHER_SVG
@@ -86,20 +86,20 @@ export default {
             'chosenMembership',
             'chosenPublisherCompanyType'
         ]),
-        updateChosenMembership(){
+        updateChosenMembership(){   //triggers chosenMembership store action
             this.$store.dispatch('chosenMembership',this.title)
-            if(this.title === WRITER_TITLE)  this.chosenPublisherCompanyType('')
+            if(this.title === WRITER_TITLE)  this.chosenPublisherCompanyType('') //if the chosen card is "writer" clear the previous chosen publisher type
         },
-        chosenPublisherCompanyType(publisherCompanyType){
+        chosenPublisherCompanyType(publisherCompanyType){   //trigger chosenPublisherCompanyType store action
             this.$store.dispatch('chosenPublisherCompanyType',publisherCompanyType)
         },
-        clickUpdate(event){
+        clickUpdate(event){ //handler for click event, when the card is chosen
             this.updateChosenMembership()
         }
 
     },
     mounted: function(){
-        switch(this.title){
+        switch(this.title){ //when mounted - build up the membership state object
             case WRITER_PUBLISHER_TITLE:
                 this.membership.title = WRITER_PUBLISHER_TITLE
                 this.membership.description = "ASCAP royalties are split evenly between Writers and Publishers. Join as both to ensure you get paid everything you deserve."

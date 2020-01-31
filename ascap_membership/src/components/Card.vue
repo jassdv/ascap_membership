@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <!-- <input type="type" name="name" v-on:click.stop="printClick"> -->
-        <button class="c-card c-card--interactive is-unselected" v-on:click.stop="printClick">
+        <button class="c-card c-card--interactive is-unselected no-padding" v-on:click.stop="printClick">
             <div id="membershipCardContent">
             <div class="card__header">
                 <div class="c-marked-text c-marked-text--center">
@@ -93,11 +93,16 @@ export default {
     },
     methods: {
         ...mapActions([
-            'chosenMembership'
+            'chosenMembership',
+            'chosenPublisherCompanyType'
         ]),
         chosenMembership(){
             console.log("in chosen membership action-title", this.title)
             this.$store.dispatch('chosenMembership',this.title)
+            if(this.title === WRITER_TITLE)  this.chosenPublisherCompanyType('')
+        },
+        chosenPublisherCompanyType(publisherCompanyType){
+            this.$store.dispatch('chosenPublisherCompanyType',publisherCompanyType)
         },
         printClick(event){
             console.log("got click inside card", event.target)
@@ -134,6 +139,7 @@ export default {
             default:
                 break
         }
+        console.log("svg: ", this.cardheaderSvg)
     }
 }
 </script>
@@ -204,11 +210,18 @@ export default {
         stroke-linecap: round;
         stroke-linejoin: round;
     }
-    .c-card__header, .c-card__body, .c-card__footer {
+    .c-card__header, .c-card__body {
         padding: 24px 24px;
     }
     .h-text-transform-uppercase {
         text-transform: uppercase;
+    }
+    .c-card__header{
+        border-bottom: 1px solid #85868c;
+    }
+    .c-card--interactive:not(:hover).is-unselected .c-card__header {
+        color: #85868c;
+        background: #fafafa;
     }
     .h-color-b500 {
         color: #175da7;

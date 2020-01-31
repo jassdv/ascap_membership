@@ -6,39 +6,39 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-      federalTaxClassification: [],
-      chosenFederalTaxClassification: "",
+      publisherCompanyType: [],
+      chosenPublisherCompanyType: "",
       chosenMembership: "",
 
   },
   mutations: {
-    federalTaxClassification(state,payload) {
-          state.federalTaxClassification = payload
+    publisherCompanyType(state,payload) {
+          state.publisherCompanyType = payload
     },
-    chosenFederalTaxClassification(state,payload){
-      state.chosenFederalTaxClassification = payload
+    chosenPublisherCompanyType(state,payload){
+      state.chosenPublisherCompanyType = payload
     },
     chosenMembership(state,payload){
       state.chosenMembership = payload
     }
   },
   actions:{
-    federalTaxClassification({commit},payload){
-      commit('federalTaxClassification',payload)
+    publisherCompanyType({commit},payload){
+      commit('publisherCompanyType',payload)
     },
-    chosenFederalTaxClassification({commit},payload){
-      commit('chosenFederalTaxClassification',payload)
+    chosenPublisherCompanyType({commit},payload){
+      commit('chosenPublisherCompanyType',payload)
     },
     chosenMembership({commit},payload){
       commit('chosenMembership',payload)
     }
   },
   getters: {
-      federalTaxClassification(state) {
-          return state.federalTaxClassification;
+      publisherCompanyType(state) {
+          return state.publisherCompanyType;
       },
-      chosenFederalTaxClassification(state){
-        return state.chosenFederalTaxClassification
+      chosenPublisherCompanyType(state){
+        return state.chosenPublisherCompanyType
       },
       chosenMembership(state){
         return state.chosenMembership

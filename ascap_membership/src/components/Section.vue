@@ -8,23 +8,18 @@
                 width="17"
                 height="27" 
                 viewBox="0 0 24 24" 
-                fill="none" 
+                fill="#337ab7" 
                 stroke-width="3" 
                 stroke-linecap="round" 
                 stroke-linejoin="round" 
                 class="feather feather-checkx"
             >
-            <polyline points="20 6 9 17 4 12" />
             </svg>
         </div>
         <h2>{{headerTitle}}</h2>
     </header>
     <div>
         <slot />
-        <!-- <div>
-            <SectionButton v-if="cancelAction" label="cancel" :click="cancelAction"> </SectionButton>
-            <SectionButton v-if="continueAction" label="continue" :click="continueAction"> </SectionButton>
-        </div> -->
     </div>
 </div>
 
@@ -46,16 +41,6 @@ export default {
         type: String,
         required: true
     },
-    continueAction:{
-        type: Function,
-        required: false,
-        default: null
-    },
-    cancelAction: {
-        type: Function,
-        required: false,
-        default: null
-    }
   },
   computed: {
       number(){
@@ -67,6 +52,9 @@ export default {
 </script>
 <style scoped>
     .ennumeration{
+        display: inline-block
+    }
+    .ennumeration svg.feather-check{
         position: absolute;
         left: 13px;
         margin: 4px 0 0;
@@ -79,16 +67,35 @@ export default {
         font-size: 12px;
         line-height: 25px;
     }
+    .ennumeration:after, .ennumeration:before {
+        content: "";
+        position: absolute;
+        z-index: 1;
+        border-radius: 50%;
+    }
+    .ennumeration:after {
+        top: 0;
+        left: 0;
+        width: 25px;
+        height: 25px;
+        background: #1178ce;
+        margin-top: 8px;
+        margin-left: 5px;
+    }
     .section-number{
         position: relative;
         z-index: 2;
+        color: #fff
     }
     h2{
         font-weight: normal;
         font-family: "Circular Black",sans-serif;
         margin: 0 0 .73em;
+        display: inline-block;
+        font-size: 1.5em;
+        line-height: 1.29;
+        margin-block-end: 0.83em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
     }
-
-
-
 </style>

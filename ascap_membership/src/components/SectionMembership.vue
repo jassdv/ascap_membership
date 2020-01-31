@@ -1,23 +1,37 @@
 <template>
-    <div>
-        <p class="pb-4">Select your membership type below:</p>
-        <div class="row">
-            <Card name="membership" type="radio" v-bind:title="WRITER_PUBLISHER_TITLE" />
-            <Card name="membership1" type="radio" v-bind:title="WRITER_TITLE" />
-            <Card name="membership2" type="radio" v-bind:title="PUBLISHER_TITLE" />
-        </div>
-        <div v-if="chosenMembership === WRITER_PUBLISHER_TITLE">{{chosenMembership}}</div>
-        <div>
-          <SectionButton label="cancel" :click="cancelAction"> </SectionButton>
-          <SectionButton label="continue" :click="continueAction"> </SectionButton>
-        </div>
+    <div class="container">
+        <fieldset class="no-border">
+            <p class="pb-4">Select your membership type below:</p>
+            <div class="row">
+                <Card name="membership" type="radio" v-bind:title="WRITER_PUBLISHER_TITLE" />
+                <Card name="membership1" type="radio" v-bind:title="WRITER_TITLE" />
+                <Card name="membership2" type="radio" v-bind:title="PUBLISHER_TITLE" />
+            </div>
+            <div v-if="membershipChoiceMissing" class="red-text">{{membershipChoiceerrorMessage}}</div>
+            <p class="t-body_sm">
+                *If you are under 18 years of age please 
+                <a href="https://ome.ascap.com/helpcenter#underAge" target="_blank">read more about how to join ASCAP. </a>
+            </p>
+            <div v-if="((chosenMembership === WRITER_PUBLISHER_TITLE) || (chosenMembership === PUBLISHER_TITLE ))">
+                <p>Please select the federal tax classification of your publisher company.</p>
+                <DropDown v-bind:contentList="publisherCompanyType"/>
+                <div v-if="piblisherCompanyTypeChoiceMissing" class="red-text">{{publisherCompanyTypeErrorMessage}}</div>
+            </div>
+            <div>
+            <SectionButton label="cancel" :click="cancelAction"> </SectionButton>
+            <SectionButton label="continue" :click="continueAction"> </SectionButton>
+            </div>
+            <div v-if="sectionSuccess"><h1>SUCCESS</h1></div>
+        </fieldset>
+       
     </div>
 </template>
 <script>
 import Section from './Section.vue'
 import Card from './Card.vue'
+import DropDown from './DropDown.vue'
 import SectionButton from './SectionButton.vue'
-import { mapMutations,mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 
 import { WRITER_PUBLISHER_TITLE, WRITER_TITLE, PUBLISHER_TITLE } from '../globals'
 
@@ -25,7 +39,8 @@ export default {
     components: {
         Section,
         Card,
-        SectionButton
+        SectionButton,
+        DropDown
     },
     data() {
         return {
@@ -33,29 +48,60 @@ export default {
             //v-if to render or not the drop down list
             WRITER_PUBLISHER_TITLE: WRITER_PUBLISHER_TITLE,
             WRITER_TITLE: WRITER_TITLE,
-            PUBLISHER_TITLE: PUBLISHER_TITLE
+            PUBLISHER_TITLE: PUBLISHER_TITLE,
+            membershipChoiceerrorMessage: "Please select your membership type.",
+            publisherCompanyTypeErrorMessage: "Please select your publisher company type.",
+            membershipChoiceMissing: false,
+            piblisherCompanyTypeChoiceMissing: false,
+            sectionSuccess: false
+
+
         };
     },
     methods: {
-        ...mapMutations([
-            'chosenFederalTaxClassification'
-        ]),
         continueAction(){
-            
+            debugger
+            switch(this.chosenMembership){
+                case WRITER_PUBLISHER_TITLE:
+                    this.membershipChoiceMissing = false
+                    if(!this.chosenPublisherCompanyType){
+                        this.piblisherCompanyTypeChoiceMissing = true
+                    }else{
+                        this.piblisherCompanyTypeChoiceMissing = false
+                        this.sectionSuccess = true
+                    }
+                    break
+                case WRITER_TITLE:
+                    this.membershipChoiceMissing = false
+                    this.sectionSuccess = true
+                    break
+                case PUBLISHER_TITLE:
+                    this.membershipChoiceMissing = false
+                    if(!this.chosenPublisherCompanyType){
+                        this.piblisherCompanyTypeChoiceMissing = true
+                    }else{
+                        this.piblisherCompanyTypeChoiceMissing = false
+                        this.sectionSuccess = true
+                    }
+                    break
+                default:
+                    this.membershipChoiceMissing = true
+
+
+            }
 
         },
         cancelAction(){
-
+            window.location.href = "https://www.ascap.com/"
         },
         selectMembership(event){
             //according to the chosen card decidning 
-            debugger
             console.log("event", event.target)
 
         }
     },
     computed: {
-       ...mapGetters(['chosenMembership'])
+       ...mapGetters(['chosenMembership','publisherCompanyType','chosenPublisherCompanyType']),
     }
     
 }
@@ -82,5 +128,10 @@ export default {
     display: flex;
     flex-wrap: nowrap;
 }
-
+.red-text{
+    color: red;
+}
+.t-body_sm {
+    font-size: 14px;
+}
 </style>

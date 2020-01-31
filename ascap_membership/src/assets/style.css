@@ -1,0 +1,19 @@
+*{
+font-family: "Circular Black",sans-serif;
+}
+div{
+    text-align: left;
+}
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.no-border{
+    border: none;
+}
+.no-padding{
+    padding: 0px 0px 0px;
+}

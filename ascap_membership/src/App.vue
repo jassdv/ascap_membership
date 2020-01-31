@@ -1,10 +1,9 @@
 <template>
-  <div id="app">
+  <div id="app" class="container ome-container">
     <Section
       headerTitle="Membership"
       sectionNumber=1
-      continueAction="continueAction"
-      cancelAction="cancelAction">
+    >
       <SectionMembership />
       
     </Section>
@@ -32,6 +31,8 @@
 import SectionButton from './components/SectionButton.vue';
 import SectionMembership from './components/SectionMembership.vue'
 import Section from './components/Section.vue'
+import { PUBLISHER_COMPANY_TYPE } from './globals.js'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -47,10 +48,16 @@ export default {
     }
   },
   methods: {
-      doSomething() {
-        console.log("hello world")
-        //
-      }
+      ...mapActions([
+            'publisherCompanyType'
+        ]),
+      publisherCompanyType(){
+            console.log("in chosen membership action-title", this.title)
+            this.$store.dispatch('publisherCompanyType',PUBLISHER_COMPANY_TYPE)
+        },
+    },
+    created: function(){
+      this.publisherCompanyType()
     }
 }
 </script>
@@ -82,4 +89,13 @@ li {
 a {
   color: #42b983;
 }
+.ome-container {
+    position: relative;
+    margin-top: 35px;
+    margin-bottom: 50px;
+}
+*{
+  font-family: "Circular Black",sans-serif;
+}
+
 </style>

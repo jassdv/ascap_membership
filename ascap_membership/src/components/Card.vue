@@ -1,6 +1,6 @@
 <template>
     <div class="card-frame">
-        <button class="c-card no-padding" v-bind:class="[(chosenMembership === title) ? 'c-card-interactive' : '']" v-on:click.stop="clickUpdate">
+        <button class="c-card no-padding" v-bind:class="[membershipError ? 'red-border' : (chosenMembership === title) ? 'c-card-interactive' : '']" v-on:click.stop="clickUpdate">
             <div id="membershipCardContent">
             <div class="card-header" v-bind:class="[(chosenMembership === title) ? 'card-header-colors-interactive' : 'card-header-colors']">
                 <div class="c-marked-text c-marked-text--center">
@@ -21,14 +21,14 @@
                     ${{membership.price}} Application Fee
                 </span>
                 <br>
-                <span v-if="!membership.refundable" class="t-body_sm h-color-m600 c-card__state-color-control">
+                <span v-if="!membership.refundable" class="t-body h-color-m600 c-card__state-color-control">
                     non-refundable 
                 </span>
                 </p
                 ><h5 class="u-spacing-outside-bottom t-weight_medium">
                     Requirements
                 </h5>
-                <ul class="ome-list--checkmarks u-spacing-outside-bottom-lg">
+                <ul class="ome-list--checkmarks u-spacing-outside-bottom">
                     <li v-for="requirement in membership.requirements" v-bind:key="requirement.title" class="u-spacing-outside-bottom">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" class="card-icon"><polyline points="20 6 9 17 4 12"></polyline></svg>
                         {{requirement}}
@@ -42,16 +42,11 @@
 </template>
 <script>
 import { WRITER_PUBLISHER_TITLE, WRITER_TITLE, PUBLISHER_TITLE, WRITE_PUBLISHER_SVG, WRITER_SVG, PUBLISHER_SVG } from '../globals.js'
-import { mapActions } from 'vuex'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
     props: {
         name: {
-            type: String,
-            required: false //need to re-think whether it should be mandatory or not
-        },
-        type: {
             type: String,
             required: false
         },
@@ -68,7 +63,6 @@ export default {
                 "price": 0,
                 "refundable": false,
                 "requirements": [],
-                "comments": []  //to be used in parent to display all * comments
             }
         };
     },
@@ -85,7 +79,7 @@ export default {
                     return WRITE_PUBLISHER_SVG
             }
         },
-        ...mapGetters(['chosenMembership'])
+        ...mapGetters(['chosenMembership','membershipError'])
     },
     methods: {
         ...mapActions([
@@ -93,7 +87,6 @@ export default {
             'chosenPublisherCompanyType'
         ]),
         updateChosenMembership(){
-            console.log("in chosen membership action-title", this.title)
             this.$store.dispatch('chosenMembership',this.title)
             if(this.title === WRITER_TITLE)  this.chosenPublisherCompanyType('')
         },
@@ -106,8 +99,6 @@ export default {
 
     },
     mounted: function(){
-        //initializing memrbership list - next step, need to be taken from the VueX store
-        
         switch(this.title){
             case WRITER_PUBLISHER_TITLE:
                 this.membership.title = WRITER_PUBLISHER_TITLE
@@ -133,7 +124,6 @@ export default {
             default:
                 break
         }
-        console.log("svg: ", this.cardheaderSvg)
     }
 }
 </script>
@@ -175,10 +165,9 @@ export default {
         transition: all .5s;
         border-color:  #1178ce;
     }
-    /* #membershipCardContent{
-        margin-top: 10px;
-    } */
-    
+    .red-border{
+        border: 1px solid red;
+    }
     .card-header:hover{
         border-color: #4dbdff;
     }
@@ -239,21 +228,9 @@ export default {
         background: #1178ce;
         border-color: #1178ce
     }
-    /* .card-header-interactive{
-        color: #fff;
-        background: #1178ce;
-        border-color: #1178ce;
-    } */
     .card-header:hover{
         color: #004183;
     }
-    /* .c-card__header:focus{
-        border-bottom: 1px solid #85868c;
-    } */
-    /* .c-card--interactive:not(:hover).is-unselected .c-card__header {
-        color: #85868c;
-        background: #fafafa;
-    } */
     .h-color-b500 {
         color: #175da7;
     }
@@ -263,7 +240,7 @@ export default {
     .h-color-m600 {
         color: #6d6d6d !important;
     }
-    .t-body_sm {
+    .t-body {
         font-size: 14px;
     }
     .t-weight_medium {
@@ -272,28 +249,17 @@ export default {
     .u-spacing-outside-bottom {
         margin-bottom: 16px !important;
     }
-    h5, .t-heading_sm {
+    h5{
         margin: 0 0 .25em;
         font-family: "Circular Black",sans-serif;
-        font-size: 1em;
+        font-size: 1.25rem;
         line-height: 1.5;
     }
-    h5 {
-        font-size: 1.25rem;
-    }
-    .u-spacing-outside-bottom-lg {
+    .u-spacing-outside-bottom {
         margin-bottom: 24px !important;
     }
     .u-spacing-outside-bottom {
         margin-bottom: 16px !important;
-    }
-    .c-icon:not(.c-icon--size-auto) {
-        width: 1.13em;
-        height: 1.13em;
-        stroke-width: 2px;
-    }
-    svg:not(:root) {
-        overflow: hidden;
     }
 </style>
 

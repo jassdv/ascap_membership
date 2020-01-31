@@ -3,9 +3,9 @@
         <fieldset class="no-border">
             <p class="pb-4">Select your membership type below:</p>
             <div class="row">
-                <Card name="membership" type="radio" v-bind:title="WRITER_PUBLISHER_TITLE" />
-                <Card name="membership1" type="radio" v-bind:title="WRITER_TITLE" />
-                <Card name="membership2" type="radio" v-bind:title="PUBLISHER_TITLE" />
+                <Card name="membership" v-bind:title="WRITER_PUBLISHER_TITLE"/>
+                <Card name="membership1" v-bind:title="WRITER_TITLE" />
+                <Card name="membership2" v-bind:title="PUBLISHER_TITLE" />
             </div>
             <p v-if="membershipChoiceMissing" class="red-text information-text">{{membershipChoiceerrorMessage}}</p>
             <p class="information-text">
@@ -22,7 +22,7 @@
                 <h3 class="publisher-type-title">Publisher Company Type</h3>
                 <p class="information-text"> Please select the federal tax classification of your publisher company.</p>
                 <DropDown v-bind:contentList="publisherCompanyType"/>
-                <p v-if="piblisherCompanyTypeChoiceMissing" class="red-text information-text">{{publisherCompanyTypeErrorMessage}}</p>
+                <p v-if="publisherCompanyTypeChoiceMissing" class="red-text information-text">{{publisherCompanyTypeErrorMessage}}</p>
             </div>
             <div>
             <SectionButton label="cancel" :click="cancelAction"> </SectionButton>
@@ -38,7 +38,7 @@ import Section from './Section.vue'
 import Card from './Card.vue'
 import DropDown from './DropDown.vue'
 import SectionButton from './SectionButton.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import { WRITER_PUBLISHER_TITLE, WRITER_TITLE, PUBLISHER_TITLE } from '../globals'
 
@@ -51,30 +51,40 @@ export default {
     },
     data() {
         return {
-            //needs to be bind to the chosen card and to
-            //v-if to render or not the drop down list
             WRITER_PUBLISHER_TITLE: WRITER_PUBLISHER_TITLE,
             WRITER_TITLE: WRITER_TITLE,
             PUBLISHER_TITLE: PUBLISHER_TITLE,
             membershipChoiceerrorMessage: "Please select your membership type.",
             publisherCompanyTypeErrorMessage: "Please select your publisher company type.",
             membershipChoiceMissing: false,
-            piblisherCompanyTypeChoiceMissing: false,
+            publisherCompanyTypeChoiceMissing: false,
             sectionSuccess: false
 
 
         };
     },
     methods: {
+        ...mapActions([
+            'membershipError',
+            'publisherError'
+        ]),
+        updateMembershipError(status){
+            this.$store.dispatch('membershipError',status)
+        },
+        updatePublisherError(status){
+            this.$store.dispatch('publisherError',status)
+        },
         continueAction(){
-            debugger
             switch(this.chosenMembership){
                 case WRITER_PUBLISHER_TITLE:
                     this.membershipChoiceMissing = false
+                    this.updateMembershipError(false)
                     if(!this.chosenPublisherCompanyType){
-                        this.piblisherCompanyTypeChoiceMissing = true
+                        this.publisherCompanyTypeChoiceMissing = true
+                        this.updatePublisherError(true)
                     }else{
-                        this.piblisherCompanyTypeChoiceMissing = false
+                        this.publisherCompanyTypeChoiceMissing = false
+                        this.updatePublisherError(false)
                         this.sectionSuccess = true
                     }
                     break
@@ -85,14 +95,17 @@ export default {
                 case PUBLISHER_TITLE:
                     this.membershipChoiceMissing = false
                     if(!this.chosenPublisherCompanyType){
-                        this.piblisherCompanyTypeChoiceMissing = true
+                        this.publisherCompanyTypeChoiceMissing = true
+                        this.updatePublisherError(true)
                     }else{
-                        this.piblisherCompanyTypeChoiceMissing = false
+                        this.publisherCompanyTypeChoiceMissing = false
+                        this.updatePublisherError(false)
                         this.sectionSuccess = true
                     }
                     break
                 default:
                     this.membershipChoiceMissing = true
+                    this.updateMembershipError(true)
 
 
             }
@@ -101,11 +114,6 @@ export default {
         cancelAction(){
             window.location.href = "https://www.ascap.com/"
         },
-        selectMembership(event){
-            //according to the chosen card decidning 
-            console.log("event", event.target)
-
-        }
     },
     computed: {
        ...mapGetters(['chosenMembership','publisherCompanyType','chosenPublisherCompanyType']),
@@ -115,13 +123,6 @@ export default {
 
 </script>
 <style scoped>
-.col-lg-4{
-    position: relative;
-    width: 100%;
-    min-height: 1px;
-    padding-right: 15px;
-    padding-left: 15px;
-}
 .u-spacing-outside-bottom {
     margin-bottom: 16px !important;
 }

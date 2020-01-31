@@ -9,6 +9,8 @@ const store = new Vuex.Store({
       publisherCompanyType: [],
       chosenPublisherCompanyType: "",
       chosenMembership: "",
+      membershipError: false,
+      publisherError: false
 
   },
   mutations: {
@@ -20,7 +22,15 @@ const store = new Vuex.Store({
     },
     chosenMembership(state,payload){
       state.chosenMembership = payload
+    },
+    membershipError(state,payload){
+      state.membershipError = payload
+    },
+    publisherError(state,payload){
+      state.publisherError = payload
     }
+    
+
   },
   actions:{
     publisherCompanyType({commit},payload){
@@ -31,6 +41,12 @@ const store = new Vuex.Store({
     },
     chosenMembership({commit},payload){
       commit('chosenMembership',payload)
+    },
+    membershipError({commit},payload){
+      commit('membershipError',payload)
+    },
+    publisherError({commit},payload){
+      commit('publisherError',payload)
     }
   },
   getters: {
@@ -42,6 +58,12 @@ const store = new Vuex.Store({
       },
       chosenMembership(state){
         return state.chosenMembership
+      },
+      membershipError(state) {
+        return state.membershipError
+      },
+      publisherError(state) {
+        return state.publisherError
       }
   }
 });

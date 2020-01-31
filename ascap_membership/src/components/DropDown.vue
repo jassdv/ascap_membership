@@ -1,8 +1,7 @@
 <template>
 <div class="input-container dropdown my-2">
-    <!-- <label>Publisher Company Type</label> -->
     <div class="dropdown validation-error">
-        <button type="button" role="button" class="dropdown-toggle" v-on:click="toggleList">
+        <button type="button" role="button" class="dropdown-toggle" v-bind:class="[publisherError ? 'red-border' : '']" v-on:click="toggleList">
             <span class="filter-option">{{label}}</span>
         </button>
         <div class="dropdown-menu" v-bind:class="[showList ? 'show' : 'dont-show']" >
@@ -14,16 +13,6 @@
                 </li>
             </ul>
         </div>
-        <!-- <select name="pets" id="pet-select">
-            <option v-for="(element) in contentList" v-bind:key="element">{{element}}</option>
-            
-        </select> -->
-        <!-- <button v-on:click="togleList" class="dropbtn">Dropdown</button>
-        <div id="myDropdown" class="dropdown-content" v-bind:class="[showList ? 'show' : 'dont-show']">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-        </div> -->
     </div>
 </div>
     
@@ -45,39 +34,35 @@ export default {
 
         }
     },
-    mounted: function(){
-        console.log(this.contentList)
-
-    },
     methods:{
         ...mapActions([
-            'chosenPublisherCompanyType'
+            'chosenPublisherCompanyType',
+            'publisherError'
         ]),
         updateChosenPublisherCompanyType(publisherCompanyType){
             this.$store.dispatch('chosenPublisherCompanyType',publisherCompanyType)
         },
+        clearPublisher(){
+            this.$store.dispatch('publisherError',false)
+        },
         toggleList(){
-            debugger
-            console.log("element was chosen")
             this.showList = !this.showList
         },
         updatePublisherType(event){
             this.toggleList()
-            debugger
-            //console.log(event.target.textContent)
             this.label = event.target.textContent
             this.updateChosenPublisherCompanyType(event.target.textContent)
+            this.clearPublisher()
 
         }
     },
     computed:{
-        ...mapGetters(['chosenPublisherCompanyType'])
+        ...mapGetters(['chosenPublisherCompanyType','publisherError'])
     }
     
 }
 </script>
 <style scoped>
-/* dropdown.bootstrap-select .btn.dropdown-toggle::after */
 .input-container{
     width: 100%;
     position: relative;
@@ -104,18 +89,6 @@ export default {
     top: 6px;
     vertical-align: .255em;
 }
-/* .dropdown-toggle::after {
-    display: inline-block;
-    width: 0;
-    height: 0;
-    margin-left: .255em;
-    vertical-align: .255em;
-    content: "";
-    border-top: .3em solid;
-    border-right: .3em solid transparent;
-    border-bottom: 0;
-    border-left: .3em solid transparent;
-} */
 div.dropdown-menu {
     min-width: 100% !important;
     margin: -1px 0 0 0;
@@ -132,7 +105,6 @@ div.dropdown-menu {
     top: 100%;
     left: 0;
     z-index: 1000;
-    /* display: none; */
     float: left;
     min-width: 10rem;
     padding: .5rem 0;
@@ -147,10 +119,6 @@ div.dropdown-menu {
     border-radius: .25rem;
     display: block;
 } 
-/* .dropdown.bootstrap-select div.dropdown-menu .inner {
-    overflow-x: hidden !important;
-    display: block;
-} */
 .dropdown-menu.inner {
     position: static;
     float: none;
@@ -171,49 +139,6 @@ div.dropdown-menu {
     word-wrap: break-word;
     white-space: pre-wrap;
 }
-/* .bootstrap-select .dropdown-menu li a {
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-} */
-/* .dropbtn {
-  background-color: #3498DB;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-}
-
-.dropbtn:hover, .dropbtn:focus {
-  background-color: #2980B9;
-}
-
-.dropdown {
-  position: relative;
-  display: block;
-}
-
-.dropdown-content { */
-  /* display: none; */
-  /* position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  overflow: auto;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 200;
-}
-
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.dropdown a:hover {background-color: #ddd;} */
 .filter-option{
     float: left;
 }
@@ -226,5 +151,8 @@ div.dropdown-menu {
 .list-item{
     font-size: 14px;
     font-weight: 400;
+}
+.red-border{
+    border: thin solid red;
 }
 </style>

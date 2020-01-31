@@ -15,7 +15,6 @@ export default {
     }
   },
   computed: {
-      //check if that could be a data object instead of computed
       style () {
           return this.label == 'continue' ? 'continue uppercase section-button' : 'cancel uppercase section-button';
       }

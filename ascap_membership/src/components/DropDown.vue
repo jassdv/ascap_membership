@@ -1,7 +1,7 @@
 <template>
-<div class="input-container dropdown my-2">
-    <div class="dropdown validation-error">
-        <button type="button" role="button" class="dropdown-toggle" v-bind:class="[publisherError ? 'red-border' : '']" v-on:click="toggleList">
+<div class="input-container dropdown">
+    <div class="dropdown bootstrap-select validation-error">
+        <button type="button" role="button" class="btn dropdown-toggle" v-bind:class="[publisherError ? 'red-border' : '']" v-on:click="toggleList">
             <span class="filter-option">{{label}}</span>
         </button>
         <div class="dropdown-menu" v-bind:class="[showList ? 'show' : 'dont-show']" >
@@ -30,8 +30,7 @@ export default {
     data() {
         return {
             showList: false,                    //indicates whether to toggle down or up the dropdown list
-            label: "Publisher Company Type"     //that is the default title - should be a prop (future improvement)  
-
+            label: "Publisher Company Type",     //that is the default title - should be a prop (future improvement)  
         }
     },
     methods:{
@@ -53,7 +52,6 @@ export default {
             this.label = event.target.textContent
             this.updateChosenPublisherCompanyType(event.target.textContent)
             this.clearPublisher()
-
         }
     },
     computed:{
@@ -66,6 +64,7 @@ export default {
 .input-container{
     width: 100%;
     position: relative;
+    padding-bottom: 10px;
 }
 .dropdown.bootstrap-select {
     background-color: #fff;
@@ -80,7 +79,7 @@ export default {
     padding: 0 12px;
     width: 100%;
 }
-.dropdown-toggle::after {
+.dropdown.bootstrap-select .btn.dropdown-toggle:after{
     content: url(data:image/svg+xml;base64,PHN2ZyBjbGFzcz0nZmVhdGhlciBmZWF0aGVyLWNoZXZyb24tZG93biBzYy1pd3NLYkkgY25sY29RJyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyNCcgaGVpZ2h0PScyNCcgdmlld0JveD0nMCAwIDI0IDI0JyBmaWxsPSdub25lJyBzdHJva2U9J2N1cnJlbnRDb2xvcicgc3Ryb2tlLXdpZHRoPScyJyBzdHJva2UtbGluZWNhcD0ncm91bmQnIHN0cm9rZS1saW5lam9pbj0ncm91bmQnIGFyaWEtaGlkZGVuPSd0cnVlJyBkYXRhLXJlYWN0aWQ9JzI2Nic+PHBvbHlsaW5lIHBvaW50cz0nNiA5IDEyIDE1IDE4IDknPjwvcG9seWxpbmU+PC9zdmc+);
     transition: transform .3s ease;
     width: auto;
@@ -88,6 +87,12 @@ export default {
     position: relative;
     top: 6px;
     vertical-align: .255em;
+    border: 0px;    
+    float: right;
+}
+.bootstrap-select .dropdown-toggle:before {
+    content: '';
+    display: inline-block;
 }
 div.dropdown-menu {
     min-width: 100% !important;
@@ -129,18 +134,28 @@ div.dropdown-menu {
     -webkit-box-shadow: none;
     box-shadow: none;
 }
-.div.dropdown-menu ul li a {
+.dropdown.bootstrap-select div.dropdown-menu ul li a {
     display: block;
     padding: 12px 10px;
     color: #0d0d0d;
     border-bottom: 1px solid #ededed;
-    font-size: 12px;
+    font-size: 18px;
     min-width: 0;
     word-wrap: break-word;
     white-space: pre-wrap;
 }
+.dropdown.bootstrap-select div.dropdown-menu ul li a:hover {
+    background-color: #ededed;
+    color: #1178ce;
+}
 .filter-option{
     float: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: start;
+    width: 80%;
+    color: #6d6d6d;
 }
 .show {
     display: block;

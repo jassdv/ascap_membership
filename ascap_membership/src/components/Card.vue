@@ -220,7 +220,7 @@ export default {
         line-height: 1.3;
     }
     .card-header-colors{
-        color: #85868c;
+        color: #004183;
         background: #fafafa;
     }
     .card-header-colors-interactive{

@@ -22,8 +22,6 @@ export default {
     methods: {
         
     }
-
-    
 }
 </script>
 <style scoped>

@@ -12,18 +12,18 @@
                 *If you are under 18 years of age please 
                 <a href="https://ome.ascap.com/helpcenter#underAge" target="_blank">read more about how to join ASCAP. </a>
             </p>
-            <p class="information-text">
-                ASCAP uses TINCheck and SmartyStreets to verify certain information provided by you in connection with your application. Any information
-                processed by TINCheck and SmartyStreets shall be subject to the privacy policies of
-                <a href="https://www.tincheck.com/pages/tincheck-agreement" target="_blank">TINCheck</a> and
-                <a href="https://smartystreets.com/legal/privacy-policy" target="_blank">SmartyStreets</a>.
-            </p>
             <div v-if="((chosenMembership === WRITER_PUBLISHER_TITLE) || (chosenMembership === PUBLISHER_TITLE ))" class="dropdown">
                 <h3 class="publisher-type-title">Publisher Company Type</h3>
                 <p class="information-text"> Please select the federal tax classification of your publisher company.</p>
                 <DropDown v-bind:contentList="publisherCompanyType"/>
                 <p v-if="publisherCompanyTypeChoiceMissing" class="red-text information-text">{{publisherCompanyTypeErrorMessage}}</p>
             </div>
+            <p class="information-text">
+                ASCAP uses TINCheck and SmartyStreets to verify certain information provided by you in connection with your application. Any information
+                processed by TINCheck and SmartyStreets shall be subject to the privacy policies of
+                <a href="https://www.tincheck.com/pages/tincheck-agreement" target="_blank">TINCheck</a> and
+                <a href="https://smartystreets.com/legal/privacy-policy" target="_blank">SmartyStreets</a>.
+            </p>
             <div>
             <SectionButton label="cancel" :click="cancelAction"> </SectionButton>
             <SectionButton label="continue" :click="continueAction"> </SectionButton>

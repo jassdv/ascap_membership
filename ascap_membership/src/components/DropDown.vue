@@ -1,7 +1,8 @@
 <template>
 <div class="input-container dropdown">
     <div class="dropdown bootstrap-select validation-error">
-        <button type="button" role="button" class="btn dropdown-toggle" v-bind:class="[publisherError ? 'red-border' : '']" v-on:click="toggleList">
+        <label v-bind:class="[isPublisherTypeChosen ? 'publisher-type-label' : 'dont-show']">Publisher Company Type</label>
+        <button type="button" role="button" class="btn dropdown-toggle" v-bind:class="[publisherError ? 'red-border' : isPublisherTypeChosen ? 'option-chosen-border' : '' ]" v-on:click="toggleList">
             <span class="filter-option">{{label}}</span>
         </button>
         <div class="dropdown-menu" v-bind:class="[showList ? 'show' : 'dont-show']" >
@@ -31,6 +32,7 @@ export default {
         return {
             showList: false,                    //indicates whether to toggle down or up the dropdown list
             label: "Publisher Company Type",     //that is the default title - should be a prop (future improvement)  
+            isPublisherTypeChosen: false
         }
     },
     methods:{
@@ -52,6 +54,7 @@ export default {
             this.label = event.target.textContent
             this.updateChosenPublisherCompanyType(event.target.textContent)
             this.clearPublisher()
+            this.isPublisherTypeChosen = true
         }
     },
     computed:{
@@ -139,7 +142,6 @@ div.dropdown-menu {
     padding: 12px 10px;
     color: #0d0d0d;
     border-bottom: 1px solid #ededed;
-    font-size: 18px;
     min-width: 0;
     word-wrap: break-word;
     white-space: pre-wrap;
@@ -170,4 +172,27 @@ div.dropdown-menu {
 .red-border{
     border: thin solid red;
 }
+.option-chosen-border{
+    border: 1px solid #1178ce;
+}
+.publisher-type-label{
+    display: inline-block;
+    position: absolute;
+    color: #6d6d6d;
+    margin-left: 12px;
+    padding: 0 2px 2px 0;
+    z-index: 3;
+    pointer-events: none;
+    line-height: 18px;
+    transition: all .3s ease;
+    transform: translateY(12px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: -20px;
+    font-size: 10px;
+    z-index: 2000;
+    background-color: white;
+}
+
 </style>

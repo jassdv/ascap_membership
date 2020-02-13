@@ -1,41 +1,12 @@
 <template>
     <div class="card-frame">
-        <button class="c-card no-padding" v-bind:class="[membershipError ? 'red-border' : (chosenMembership === title) ? 'c-card-interactive' : '']" v-on:click.stop="clickUpdate">
-            <div id="membershipCardContent">
-            <div class="card-header" v-bind:class="[(chosenMembership === title) ? 'card-header-colors-interactive' : 'card-header-colors']">
-                <div class="c-marked-text c-marked-text--center">
-                    <div class="c-marked-text__icon" v-html="cardheaderSvg">
-                    </div>
-                    <div class="c-marked-text__content">
-                        <h2 
-                            class="header-text">{{title}}
-                        </h2>
-                    </div>
-                </div>
+        <button class="c-card no-padding" v-bind:class="[error ? 'red-border' : focus ? 'c-card-interactive' : hover ? 'c-card-hover' : '']" v-on:click.stop="clickUpdate" @mouseover="hover = true" @mouseleave="hover = false">
+            <div class="card-header" v-bind:class="[focus ? 'card-header-colors-interactive' : hover ? 'card-header-colors card-header-hover' : 'card-header-colors-not-interactive']">
+                <slot name="header"/>
             </div>
             <div class="card-body">
-                <p>
-                    {{membership.description}}</p>
-                <p>
-                <span class="h-color-b500 h-text-transform-uppercase t-weight_bold c-card__state-color-control">
-                    ${{membership.price}} Application Fee
-                </span>
-                <br>
-                <span v-if="!membership.refundable" class="t-body h-color-m600 c-card__state-color-control">
-                    non-refundable 
-                </span>
-                </p
-                ><h5 class="u-spacing-outside-bottom t-weight_medium">
-                    Requirements
-                </h5>
-                <ul class="ome-list--checkmarks u-spacing-outside-bottom">
-                    <li v-for="requirement in membership.requirements" v-bind:key="requirement.title" class="u-spacing-outside-bottom">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" class="card-icon"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                        {{requirement}}
-                    </li>
-                </ul>
+                <slot name="body"/>
             </div>
-        </div>
         </button>
 </div>
     
@@ -46,85 +17,39 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
     props: {
-        name: {
-            type: String,
-            required: false
-        },
         title: {
             type: String,
             required: true
         },
+        error: {
+            type: Boolean,
+            required: false
+        },
+        focus: {
+            type: Boolean,
+            required: false
+        }
     },
     data() {
         return {
-            membership: {           //an object to hold all membership info to display on the card
-                "title": "",      
-                "description": "",
-                "price": 0,
-                "refundable": false,
-                "requirements": [],
-            }
+            hover: false,
         };
     },
-    computed: {
-        cardheaderSvg(){  //holds the relevant svg
-            switch(this.title){
-                case WRITER_PUBLISHER_TITLE:
-                    return WRITE_PUBLISHER_SVG
-                case WRITER_TITLE:
-                    return WRITER_SVG
-                case PUBLISHER_TITLE:
-                    return PUBLISHER_SVG
-                default:
-                    return WRITE_PUBLISHER_SVG
-            }
-        },
-        ...mapGetters(['chosenMembership','membershipError'])
-    },
+    // computed: {
+    //     ...mapGetters({
+    //         getMembership : 'chosenMembership',
+    //         getMembershipError: 'membershipError'})
+    // },
     methods: {
         ...mapActions([
             'chosenMembership',
             'chosenPublisherCompanyType'
         ]),
-        updateChosenMembership(){   //triggers chosenMembership store action
-            this.$store.dispatch('chosenMembership',this.title)
-            if(this.title === WRITER_TITLE)  this.chosenPublisherCompanyType('') //if the chosen card is "writer" clear the previous chosen publisher type
-        },
-        chosenPublisherCompanyType(publisherCompanyType){   //trigger chosenPublisherCompanyType store action
-            this.$store.dispatch('chosenPublisherCompanyType',publisherCompanyType)
-        },
         clickUpdate(event){ //handler for click event, when the card is chosen
-            this.updateChosenMembership()
+            this.$emit('card-chosen', this.title)
         }
 
     },
-    mounted: function(){
-        switch(this.title){ //when mounted - build up the membership state object
-            case WRITER_PUBLISHER_TITLE:
-                this.membership.title = WRITER_PUBLISHER_TITLE
-                this.membership.description = "ASCAP royalties are split evenly between Writers and Publishers. Join as both to ensure you get paid everything you deserve."
-                this.membership.price = 100
-                this.membership.refundable = false
-                this.membership.requirements = ["Legal Name", "Mailing Address", "Valid Email Address","SSN/ITIN or EIN","Must be 18 or older*"]
-                break
-            case WRITER_TITLE:
-                this.membership.title = WRITER_TITLE
-                this.membership.description = "A Writer is someone who creates a musical composition: the melody, harmony, lyrics, arrangements, beats, etc."
-                this.membership.price = 50
-                this.membership.refundable = false
-                this.membership.requirements = ["Legal Name", "Mailing Address", "Valid Email Address","SSN/ITIN or EIN","Must be 18 or older*"]
-                break
-            case PUBLISHER_TITLE:
-                this.membership.title = PUBLISHER_TITLE
-                this.membership.description = "A Publisher is a person or company that handles the business side of music. Publishers may control the copyrights of a musical composition, licensing, etc."
-                this.membership.price = 50
-                this.membership.refundable = false
-                this.membership.requirements = ["Legal Name", "Mailing Address", "Valid Email Address","SSN/ITIN or EIN","Must be 18 or older*"]
-                break
-            default:
-                break
-        }
-    }
 }
 </script>
 <style scoped>
@@ -156,7 +81,7 @@ export default {
         border-radius: 2px;
         margin-bottom: 0;
     }
-    .c-card:hover{
+    .c-card-hover{
         border-color: #4dbdff;
     }
     .c-card-interactive {
@@ -168,33 +93,8 @@ export default {
     .red-border{
         border: 1px solid red;
     }
-    .card-header:hover{
-        border-color: #4dbdff;
-    }
-
-    .header-text{
-        margin-top: 0px;
-        margin-bottom: 0px;
-        font-size: 16px;
-    }
-    .c-marked-text--center {
-        justify-content: center;
-    }
-    .c-marked-text {
-        display: flex;
-    }
-    .c-marked-text__icon{
-        margin-right: 16px;
-        flex-shrink: 0;
-        padding-top: .1em;
-        padding-bottom: .1em;
-    }
-    .c-marked-text--center .c-marked-text__content {
-        flex-grow: 0;
-    }
-    .c-marked-text__content {
-        flex: 1 1 auto;
-        align-self: center;
+    .card-header-hover{
+        border-bottom: 1px solid #4dbdff;
     }
     .card-icon {
         vertical-align: sub;
@@ -211,9 +111,6 @@ export default {
         line-height: 1.5;
         font-weight: medium;
     }
-    .h-text-transform-uppercase {
-        text-transform: uppercase;
-    }
     .card-header{
         border-bottom: 1px solid #85868c;
         font-size: 1.25em;
@@ -228,38 +125,13 @@ export default {
         background: #1178ce;
         border-color: #1178ce
     }
-    .card-header:hover{
-        color: #004183;
-    }
-    .h-color-b500 {
-        color: #175da7;
-    }
-    .t-weight_bold {
-        font-family: "Circular Bold",sans-serif;
-    }
-    .h-color-m600 {
-        color: #6d6d6d !important;
-    }
-    .t-body {
-        font-size: 14px;
+    .card-header-colors-not-interactive{
+        color: #85868c;
+        background: #fafafa;
+        border-color: #85868c;
     }
     .t-weight_medium {
     font-family: "Circular Medium",sans-serif;
-}
-    .u-spacing-outside-bottom {
-        margin-bottom: 16px !important;
-    }
-    h5{
-        margin: 0 0 .25em;
-        font-family: "Circular Black",sans-serif;
-        font-size: 1.25rem;
-        line-height: 1.5;
-    }
-    .u-spacing-outside-bottom {
-        margin-bottom: 24px !important;
-    }
-    .u-spacing-outside-bottom {
-        margin-bottom: 16px !important;
     }
 </style>
 

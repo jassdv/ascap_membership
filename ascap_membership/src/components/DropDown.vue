@@ -2,7 +2,7 @@
 <div class="input-container dropdown">
     <div class="dropdown bootstrap-select validation-error">
         <label v-bind:class="[isPublisherTypeChosen ? 'publisher-type-label' : 'dont-show']">Publisher Company Type</label>
-        <button type="button" role="button" class="btn dropdown-toggle" v-bind:class="[publisherError ? 'red-border' : isPublisherTypeChosen ? 'option-chosen-border' : '' ]" v-on:click="toggleList">
+        <button type="button" role="button" class="btn dropdown-toggle" v-bind:class="[getPublisherError ? 'red-border' : isPublisherTypeChosen ? 'option-chosen-border' : '' ]" v-on:click="toggleList">
             <span class="filter-option">{{label}}</span>
         </button>
         <div class="dropdown-menu" v-bind:class="[showList ? 'show' : 'dont-show']" >
@@ -43,7 +43,7 @@ export default {
         updateChosenPublisherCompanyType(publisherCompanyType){ //triggers chosenPublisherCompanyType store action
             this.$store.dispatch('chosenPublisherCompanyType',publisherCompanyType)
         },
-        clearPublisher(){   //if the user chose an item from the lest, clears the error status in the store
+        clearPublisher(){   //if the user chose an item from the list, clears the error status in the store
             this.$store.dispatch('publisherError',false)
         },
         toggleList(){   //update the toggle state attribute
@@ -58,7 +58,7 @@ export default {
         }
     },
     computed:{
-        ...mapGetters(['chosenPublisherCompanyType','publisherError'])
+        ...mapGetters({getPublisherError: 'publisherError'})
     }
     
 }

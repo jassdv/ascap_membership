@@ -11,5 +11,4 @@ export const WRITER_SVG = '<svg data-v-54cdc180="" id="quavers-and-briefcases" x
 export const PUBLISHER_SVG = '<svg id="briefcase" xmlns="http://www.w3.org/2000/svg" stroke-width="2" width="26" height="29" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" class="card-icon c-icon--size-auto"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>'
 
 //Publisher Company Type
-export const PUBLISHER_COMPANY_TYPE = ['Individual / Sole proprietor or Single-member LLC','C Corporation','S Corporation','LLC - C Corporation','LLC - S Corporation','LLC - Partnership', 'Partnership','Trust / Estate','OTHER' ]
-
+export const PUBLISHER_COMPANY_TYPE = ['Individual / Sole proprietor or Single-member LLC','C Corporation','S Corporation','LLC - C Corporation','LLC - S Corporation','LLC - Partnership', 'Partnership','Trust / Estate','OTHER']

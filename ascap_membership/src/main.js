@@ -9,7 +9,6 @@ const store = new Vuex.Store({
       publisherCompanyType: [],         //a list of publishe company types. in real app should be saved in db
       chosenPublisherCompanyType: "",   //the chosen publisher company type
       chosenMembership: "",             //the chosen membership type
-      membershipError: false,           //indicates error- when user hit "continue" without choosing membership
       publisherError: false             //indicates error- when user hit "continue" without choosing publisher company type
 
   },
@@ -23,14 +22,9 @@ const store = new Vuex.Store({
     chosenMembership(state,payload){
       state.chosenMembership = payload
     },
-    membershipError(state,payload){
-      state.membershipError = payload
-    },
     publisherError(state,payload){
       state.publisherError = payload
     }
-    
-
   },
   actions:{ //an action for each store attribute
     publisherCompanyType({commit},payload){
@@ -41,9 +35,6 @@ const store = new Vuex.Store({
     },
     chosenMembership({commit},payload){
       commit('chosenMembership',payload)
-    },
-    membershipError({commit},payload){
-      commit('membershipError',payload)
     },
     publisherError({commit},payload){
       commit('publisherError',payload)
@@ -58,9 +49,6 @@ const store = new Vuex.Store({
       },
       chosenMembership(state){
         return state.chosenMembership
-      },
-      membershipError(state) {
-        return state.membershipError
       },
       publisherError(state) {
         return state.publisherError

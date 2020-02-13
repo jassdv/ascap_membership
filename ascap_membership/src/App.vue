@@ -21,7 +21,6 @@ export default {
     SectionButton,
     SectionMembership,
     Section
-
   },
   name: 'app',
   data () {
@@ -39,7 +38,7 @@ export default {
     },
     created: function(){  //when created, mutate the store to hold the list of publisher company type
       this.publisherCompanyType()
-    }
+    },
 }
 </script>
 
